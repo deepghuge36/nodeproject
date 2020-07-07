@@ -1,13 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const content = require('../models/Content')
-
-const {
-  ensureGuest
-} = require('../helper/authHelper');
-const cookieParser = require('cookie-parser');
-
 
 router.get(
   '/google',
@@ -28,7 +21,6 @@ router.get(
 );
 
 
-
 router.get('/verify', (req, res) => {
   if (req.user) {
     console.log(req.user);
@@ -36,6 +28,7 @@ router.get('/verify', (req, res) => {
     console.log('No auth')
   }
 })
+
 router.get('/logout', (req, res) => {
   req.logOut();
   res.redirect('/')

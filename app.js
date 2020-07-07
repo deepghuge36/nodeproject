@@ -1,4 +1,9 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
+const Handlebars = require('handlebars');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
@@ -19,6 +24,17 @@ mongoose
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.log(err));
 
+app.set('views', __dirname + '/views');
+//use the handlebars
+app.engine(
+  'hbs',
+  exphbs({
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    extname: '.hbs',
+  })
+);
+app.set('view engine', 'hbs');
+
 
 app.use(session({
   secret: "secret",
@@ -29,16 +45,16 @@ app.use(session({
 //passport seesion
 app.use(passport.initialize())
 app.use(passport.session())
+
 app.use(cookieParser());
 
 
-app.get('/', (req, res) => {
-  res.send("DipakGhuge")
-})
-
 //load routes
 const auth = require('./routes/auth')
-app.use('/auth', auth)
+const index = require('./routes/index')
+app.use('/auth', auth);
+app.use('/', index)
+
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server Running on http://localhost:5000');

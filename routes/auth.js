@@ -1,19 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const content = require('../models/Content')
+
+const {
+  ensureGuest
+} = require('../helper/authHelper');
+const cookieParser = require('cookie-parser');
+
 
 router.get(
   '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
 );
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', {
+    failureRedirect: '/'
+  }),
   (req, res) => {
     //successful user login success
-    res.redirect('/dashborad');
+    res.redirect('/');
   }
 );
+
+
+
+router.get('/verify', (req, res) => {
+  if (req.user) {
+    console.log(req.user);
+  } else {
+    console.log('No auth')
+  }
+})
+router.get('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/')
+})
 
 module.exports = router;

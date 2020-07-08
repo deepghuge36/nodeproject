@@ -24,8 +24,9 @@ mongoose
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.log(err));
 
-app.set('views', __dirname + '/views');
 //use the handlebars
+app.set('views', __dirname + '/views');
+
 app.engine(
   'hbs',
   exphbs({
@@ -48,6 +49,16 @@ app.use(passport.session())
 
 app.use(cookieParser());
 
+//gobal variables
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+})
+
+// app.use((req, res, next) => {
+//   res.locals.content = req.content || null
+//   next();
+// })
 
 //load routes
 const auth = require('./routes/auth')

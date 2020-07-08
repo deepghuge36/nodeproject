@@ -12,4 +12,8 @@ router.get('/add',ensureAuthenticated, (req, res) => {
   res.render("stories/add");
 })
 
+//add stories to db
+router.post('/', ensureAuthenticated, (req, res) => {
+  res.send('send')
+})
 module.exports = router

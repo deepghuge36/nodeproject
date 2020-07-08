@@ -7,7 +7,13 @@ const User = require('../models/User');
 
 //stories index
 router.get('/', (req, res) => {
-  res.render("stories/index")
+  Story.find({ status: "public" })
+    .populate('user')
+    .then(stories => {
+      res.render("stories/index", {
+       stories: stories
+     })
+  })
 })
 
 //add Stories

@@ -17,13 +17,14 @@ module.exports = function (passport) {
           email: profile.emails[0].value,
           image: profile.photos[0].value
         }
+              console.log(profile)
+
         User.findOne({
             googleID: profile.id
           })
           .then((user) => {
             if (user) {
               done(null, user)
-              console.log(user)
             } else {
               new User(newUser)
                 .save()

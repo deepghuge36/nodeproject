@@ -8,9 +8,9 @@ module.exports = {
   },
   ensureGuest: function (req, res, next) {
     if (req.isAuthenticated()) {
-      res.redirect("/newsfeed");
+      res.redirect("/dashboard");
     } else {
-      next();
+      return next();
     }
   },
 };

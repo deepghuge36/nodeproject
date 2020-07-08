@@ -8,8 +8,11 @@ router.get('/', (req, res) => {
     title: title
   });
 })
-router.get('/home', (req, res) => {
-  res.send("Home")
+router.get('/dashboard', (req, res) => {
+  res.render("index/dashboard")
+})
+router.get('/about', (req, res) => {
+  res.render("index/about")
 })
 
 module.exports = router

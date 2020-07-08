@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
 const {
@@ -24,6 +25,9 @@ mongoose
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.log(err));
 
+  //set static path
+
+  app.use(express.static(path.join(__dirname,"public")))
 //use the handlebars
 app.set('views', __dirname + '/views');
 
@@ -63,9 +67,10 @@ app.use((req, res, next) => {
 //load routes
 const auth = require('./routes/auth')
 const index = require('./routes/index')
+const stories = require('./routes/stories');
+app.use('/', index);
 app.use('/auth', auth);
-app.use('/', index)
-
+app.use('/stories', stories);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server Running on http://localhost:5000');

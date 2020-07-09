@@ -16,10 +16,23 @@ router.get('/', (req, res) => {
   })
 })
 
+//show single Story 
+router.get('/show/:id', (req, res) => {
+  Story.findOne({ _id: req.params.id })
+    .populate('user')
+    .then(story => {
+      res.render("stories/show", {
+        story: story
+      })
+    })
+})
+
 //add Stories
 router.get('/add',ensureAuthenticated, (req, res) => {
   res.render("stories/add");
 })
+
+
 
 //add stories to db
 router.post('/', ensureAuthenticated, (req, res) => {

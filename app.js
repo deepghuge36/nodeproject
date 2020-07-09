@@ -26,7 +26,11 @@ require('./config/passport')(passport);
 const keys = require('./config/keys.js')
 
 //handlebars helpers
-const {truncate,stripTags}=require('./helper/hbs')
+const {
+  truncate,
+  stripTags,
+  formatDate
+} = require('./helper/hbs')
 
 //mongoose connection
 mongoose
@@ -48,7 +52,8 @@ app.engine(
   exphbs({
     helpers: {
       truncate: truncate,
-      stripTags:stripTags
+      stripTags: stripTags,
+      formatDate: formatDate
     },
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     extname: '.hbs',

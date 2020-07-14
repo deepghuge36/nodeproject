@@ -32,7 +32,15 @@ router.get('/add',ensureAuthenticated, (req, res) => {
   res.render("stories/add");
 })
 
-
+// edit stories 
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
+  Story.findOne({ _id: req.params.id })
+    .then(story => {
+      res.render("stories/edit", {
+        story: story
+      })
+    })
+})
 
 //add stories to db
 router.post('/', ensureAuthenticated, (req, res) => {
@@ -56,6 +64,39 @@ router.post('/', ensureAuthenticated, (req, res) => {
     .save()
     .then((story) => {
       res.redirect(`/stories/show/${story.id}`)
+    })
+})
+
+//edit post process
+router.put('/:id', (req, res) => {
+  Story.findOne({ _id: req.params.id })
+    .then(story => {
+      let allowComments;
+      if (req.body.allowComments) {
+      allowComments =true;
+      } else {   
+      allowComments = false;
+      }
+      
+      //set new values
+      story.title = req.body.title;
+      story.body = req.body.body;
+      story.status = req.body.status;
+      story.allowComments = allowComments;
+
+      story.save()
+        .then(story => {
+          res.redirect('/dashboard')
+        })
+    })
+})
+
+//delete story
+
+router.delete('/:id', (req, res) => {
+  Story.remove({ _id: req.params.id })
+    .then(() => {
+      res.redirect('/dashboard');
     })
 })
 module.exports = router

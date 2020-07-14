@@ -10,8 +10,12 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
 const app = express();
+
+//method overider middleware
+app.use(methodOverride('_method'));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -29,7 +33,8 @@ const keys = require('./config/keys.js')
 const {
   truncate,
   stripTags,
-  formatDate
+  formatDate,
+  select
 } = require('./helper/hbs')
 
 //mongoose connection
@@ -41,9 +46,9 @@ mongoose
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.log(err));
 
-  //set static path
-
-  app.use(express.static(path.join(__dirname,"public")))
+//set static path
+app.use(express.static(path.join(__dirname, "public")))
+  
 //use the handlebars
 app.set('views', __dirname + '/views');
 
@@ -53,7 +58,8 @@ app.engine(
     helpers: {
       truncate: truncate,
       stripTags: stripTags,
-      formatDate: formatDate
+      formatDate: formatDate,
+      select: select
     },
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     extname: '.hbs',

@@ -43,4 +43,4 @@ const StorySchema = new Schema({
   }
 })
 //create collection
-module.exports = Stories = mongoose.model('storeis', StorySchema,"stories")
+module.exports = Stories = mongoose.model('stories', StorySchema,"stories")

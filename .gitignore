@@ -117,5 +117,5 @@ dist
 
 
 #appConfig
-/config/appConfig_Dev.js
+config/appConfig_Dev.js
 

@@ -9,6 +9,7 @@ const User = require('../models/User');
 router.get('/', (req, res) => {
   Story.find({ status: "public" })
     .populate('user')
+    .sort({date:'desc'})
     .then(stories => {
       res.render("stories/index", {
        stories: stories
@@ -20,11 +21,13 @@ router.get('/', (req, res) => {
 router.get('/show/:id', (req, res) => {
   Story.findOne({ _id: req.params.id })
     .populate('user')
+    .populate('comments.commentUser')
     .then(story => {
       res.render("stories/show", {
         story: story
       })
     })
+    .catch((err) => console.log(err));
 })
 
 //add Stories
@@ -36,10 +39,15 @@ router.get('/add',ensureAuthenticated, (req, res) => {
 router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Story.findOne({ _id: req.params.id })
     .then(story => {
+      if (story.user != req.user.id) {
+        res.redirect('/stories');
+      }else{
       res.render("stories/edit", {
         story: story
-      })
+        })
+      }
     })
+  .catch((err) => console.log(err))
 })
 
 //add stories to db
@@ -65,6 +73,7 @@ router.post('/', ensureAuthenticated, (req, res) => {
     .then((story) => {
       res.redirect(`/stories/show/${story.id}`)
     })
+  .catch((err) => console.log(err))
 })
 
 //edit post process
@@ -88,6 +97,7 @@ router.put('/:id', (req, res) => {
         .then(story => {
           res.redirect('/dashboard')
         })
+      .catch((err) => console.log(err))
     })
 })
 
@@ -98,5 +108,25 @@ router.delete('/:id', (req, res) => {
     .then(() => {
       res.redirect('/dashboard');
     })
+  .catch((err) => console.log(err))
 })
+
+//add comments
+
+router.post('/comment/:id', (req, res) => {
+  Story.findOne({_id: req.params.id })
+    .then((story) => {
+      const newComment = {
+        commentBody: req.body.commentBody,
+        commentUser : req.user.id
+      }
+      //push comments array
+      story.comments.unshift(newComment)
+      story.save()
+        .then(story => {
+          res.redirect(`/stories/show/${story.id}`)
+        })
+    })
+})
+
 module.exports = router

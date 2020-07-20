@@ -34,7 +34,8 @@ const {
   truncate,
   stripTags,
   formatDate,
-  select
+  select,
+  editIcon
 } = require('./helper/hbs')
 
 //mongoose connection
@@ -59,7 +60,8 @@ app.engine(
       truncate: truncate,
       stripTags: stripTags,
       formatDate: formatDate,
-      select: select
+      select: select,
+      editIcon: editIcon
     },
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     extname: '.hbs',

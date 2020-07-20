@@ -20,6 +20,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
         stories: stories
       });
     })
+  .catch((err) => console.log(err))
 })
 router.get('/about', (req, res) => {
   res.render("index/about")

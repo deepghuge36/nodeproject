@@ -118,3 +118,5 @@ dist
 
 #appConfig
 .config/appConfig_Dev.js
+appConfig_Dev
+

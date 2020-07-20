@@ -1,3 +1,2 @@
 node_modules
-appConfig_Dev
-/config/appConfig_Dev
+config/appConfig_Dev.js

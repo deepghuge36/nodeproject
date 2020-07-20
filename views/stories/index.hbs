@@ -14,11 +14,13 @@
         <br>
         <div class="chip">
           <img src="{{user.image}}">
-          {{user.name}}
+          <a href="/stories/user/{{user.id}}">
+            {{user.name}}
+          </a>
         </div>
       </div>
       <div class="card-action center-align">
-        <a class="btn grey" href="/stories/show/{{id}}">Read More</a>
+        <a class="btn grey" href="stories/show/{{id}}">Read More</a>
       </div>
     </div>
   </div>
